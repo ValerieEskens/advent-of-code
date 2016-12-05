@@ -32,14 +32,20 @@ var movements2 = {
     "D": { U: "B", R: "D", D: "D", L: "D" }
 };
 var currentNumber = 5;
-var code = "";
-for (var _i = 0, codeString_1 = codeString; _i < codeString_1.length; _i++) {
-    var number = codeString_1[_i];
-    var numberInstructions = number.split('');
-    for (var _a = 0, numberInstructions_1 = numberInstructions; _a < numberInstructions_1.length; _a++) {
-        var numberInstruction = numberInstructions_1[_a];
-        currentNumber = movements2[currentNumber][numberInstruction];
+function getCode(m) {
+    var code = "";
+    for (var _i = 0, codeString_1 = codeString; _i < codeString_1.length; _i++) {
+        var number = codeString_1[_i];
+        var numberInstructions = number.split('');
+        for (var _a = 0, numberInstructions_1 = numberInstructions; _a < numberInstructions_1.length; _a++) {
+            var numberInstruction = numberInstructions_1[_a];
+            currentNumber = m[currentNumber][numberInstruction];
+        }
+        code += currentNumber;
     }
-    code += currentNumber;
+    return code;
 }
-console.log("code", code);
+function getCode2() {
+}
+console.log("part 1 code", getCode(movements));
+console.log("part 2 code", getCode(movements2));

@@ -35,15 +35,23 @@ let movements2: Object = {
 }
 
 let currentNumber: number = 5;
-let code: string = "";
 
-for(let number of codeString) {
-	let numberInstructions: Array<string> = number.split('');
+function getCode(m: Object): string {
+	let code: string = "";
+	for(let number of codeString) {
+		let numberInstructions: Array<string> = number.split('');
 
-	for(let numberInstruction of numberInstructions) {
-		currentNumber = movements2[currentNumber][numberInstruction]
+		for(let numberInstruction of numberInstructions) {
+			currentNumber = m[currentNumber][numberInstruction]
+		}
+		code += currentNumber
 	}
-	code += currentNumber
+	return code
 }
 
-console.log("code", code);
+function getCode2() {
+
+}
+
+console.log("part 1 code", getCode(movements));
+console.log("part 2 code", getCode(movements2));
