@@ -1005,18 +1005,7 @@ function checkRoom(room: Object): Object {
   return room;
 }
 
-for(let room of rooms) {
-  let checkedRoom: Object = checkRoom(room)
-  if(Object.keys(checkedRoom).length !== 0) {
-    sumSectorIds += parseInt(checkedRoom.sectorId);
-    checkedRooms.push(checkedRoom);
-  }
-  
-}
-
-console.log("sumSectorIds", sumSectorIds);
-
-for(let room of checkedRooms) {
+function calcRealName(room: Object): string{
   let realName: string = "";
   let shift: number = parseInt(room.sectorId) % 26
   for(let char of room.name) {
@@ -1032,5 +1021,22 @@ for(let room of checkedRooms) {
       realName += shiftedChar;
     }
   }
-  console.log("realName", realName, "; sectorId:", room.sectorId);
+  return realName;
+}
+
+for(let room of rooms) {
+  let checkedRoom: Object = checkRoom(room)
+  if(Object.keys(checkedRoom).length !== 0) {
+    sumSectorIds += parseInt(checkedRoom.sectorId);
+    checkedRooms.push(checkedRoom);
+  }
+  
+}
+console.log("sumSectorIds", sumSectorIds);
+
+for(let room of checkedRooms) {
+  let realName: string = calcRealName(room);
+  if(realName.indexOf("northpole") !== -1) {
+    console.log(realName, "sectorId:", room.sectorId);
+  }
 }

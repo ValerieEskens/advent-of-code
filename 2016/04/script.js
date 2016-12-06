@@ -51,21 +51,11 @@ function checkRoom(room) {
     }
     return room;
 }
-for (var _i = 0, rooms_1 = rooms; _i < rooms_1.length; _i++) {
-    var room = rooms_1[_i];
-    var checkedRoom = checkRoom(room);
-    if (Object.keys(checkedRoom).length !== 0) {
-        sumSectorIds += parseInt(checkedRoom.sectorId);
-        checkedRooms.push(checkedRoom);
-    }
-}
-console.log("sumSectorIds", sumSectorIds);
-for (var _a = 0, checkedRooms_1 = checkedRooms; _a < checkedRooms_1.length; _a++) {
-    var room = checkedRooms_1[_a];
+function calcRealName(room) {
     var realName = "";
     var shift = parseInt(room.sectorId) % 26;
-    for (var _b = 0, _c = room.name; _b < _c.length; _b++) {
-        var char = _c[_b];
+    for (var _i = 0, _a = room.name; _i < _a.length; _i++) {
+        var char = _a[_i];
         if (char === "-") {
             realName += " ";
         }
@@ -79,5 +69,21 @@ for (var _a = 0, checkedRooms_1 = checkedRooms; _a < checkedRooms_1.length; _a++
             realName += shiftedChar;
         }
     }
-    console.log("realName", realName, "; sectorId:", room.sectorId);
+    return realName;
+}
+for (var _i = 0, rooms_1 = rooms; _i < rooms_1.length; _i++) {
+    var room = rooms_1[_i];
+    var checkedRoom = checkRoom(room);
+    if (Object.keys(checkedRoom).length !== 0) {
+        sumSectorIds += parseInt(checkedRoom.sectorId);
+        checkedRooms.push(checkedRoom);
+    }
+}
+console.log("sumSectorIds", sumSectorIds);
+for (var _a = 0, checkedRooms_1 = checkedRooms; _a < checkedRooms_1.length; _a++) {
+    var room = checkedRooms_1[_a];
+    var realName = calcRealName(room);
+    if (realName.indexOf("northpole") !== -1) {
+        console.log(realName, "sectorId:", room.sectorId);
+    }
 }
