@@ -571,26 +571,53 @@ ehdsuoae
 waosdkig
 tyribhpm`;
 
-input = `eedadn
-drvtee
-eandsr
-raavrd
-atevrs
-tsrnev
-sdttsa
-rasrtv
-nssdts
-ntnada
-svetve
-tesnvt
-vntsnd
-vrdear
-dvrsen
-enarar`;
+let splittedInput: Array<string> = input.split("\n");
+let columns: Array<Object> = [];
+let messageLeastOccurences: string = "";
+let messageMostOccurences: string = "";
 
-console.log(input.split("\n"));
-
-for(let line of input) {
-  line = line.split("")
-  
+function createColumns(nr: number) {
+	while(nr > 0) {
+		columns.push({});
+		nr--;
+	}
 }
+
+function addCharsToColumns(chars: Array<string>) {
+	for (let index in chars) {
+		if(!columns[index][chars[index]]) {
+			columns[index][chars[index]] = 0;
+		}
+		columns[index][chars[index]]++
+	}
+}
+
+function decodeMessage(col: Object): void {
+	let mostOccurences: Object = {}
+	let leasOccurences: Object = {}
+	for(let i in col) {
+		if(!leasOccurences.char || col[i] < leasOccurences.occ) {
+			leasOccurences = { char: i, occ: col[i] }
+		}
+		if(!mostOccurences.char || col[i] > mostOccurences.occ) {
+			mostOccurences = { char: i, occ: col[i] }
+		}
+	}
+	messageLeastOccurences += leasOccurences.char
+	messageMostOccurences += mostOccurences.char
+}
+
+for(let line of splittedInput) {
+	let chars: Array<string> = line.split("");
+	if(columns.length === 0) {
+		createColumns(chars.length);
+	}
+	addCharsToColumns(chars)
+}
+
+for(let col of columns) {
+	decodeMessage(col);
+}
+
+console.log("messageLeastOccurences", messageLeastOccurences);
+console.log("messageMostOccurences", messageMostOccurences);
