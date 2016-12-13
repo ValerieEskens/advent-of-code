@@ -35,3 +35,5 @@ X(8x2)(3x3)ABCY becomes XABCABCABCABCABCABCY, because the decompressed data from
 Unfortunately, the computer you brought probably doesn't have enough memory to actually decompress the file; you'll have to come up with another way to get its decompressed length.
 
 What is the decompressed length of the file using this improved format?
+
+414252 too low
