@@ -18,8 +18,6 @@ What is the decompressed length of the file (your puzzle input)? Don't count whi
 
 Your puzzle answer was 150914.
 
-The first half of this puzzle is complete! It provides one gold star: *
-
 --- Part Two ---
 
 Apparently, the file actually uses version two of the format.
@@ -36,4 +34,4 @@ Unfortunately, the computer you brought probably doesn't have enough memory to a
 
 What is the decompressed length of the file using this improved format?
 
-11049025040 too low
+Your puzzle answer was 11052855125.
