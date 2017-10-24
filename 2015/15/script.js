@@ -1,93 +1,74 @@
-  let input = {
-    'sprinkles':    { 'capacity': 2, 'durability': 0,  'flavor': -2, 'texture': 0, 'calories': 3 },
-    'butterscotch': { 'capacity': 0, 'durability': 5,  'flavor': -3, 'texture': 0, 'calories': 3 },
-    'chocolate':    { 'capacity': 0, 'durability': 0,  'flavor': 5,  'texture': -1,'calories': 8 },
-    'candy':        { 'capacity': 0, 'durability': -1, 'flavor': 0,  'texture': 5, 'calories': 8 }
-  }
+let input = {
+  'sprinkles':    { 'capacity': 2, 'durability': 0,  'flavor': -2, 'texture': 0, 'calories': 3 },
+  'butterscotch': { 'capacity': 0, 'durability': 5,  'flavor': -3, 'texture': 0, 'calories': 3 },
+  'chocolate':    { 'capacity': 0, 'durability': 0,  'flavor': 5,  'texture': -1,'calories': 8 },
+  'candy':        { 'capacity': 0, 'durability': -1, 'flavor': 0,  'texture': 5, 'calories': 8 }
+}
 
-  // input = {
-  //   'butterscotch': { 'capacity': -1, 'durability': -2,  'flavor': 6, 'texture': 3, 'calories': 8 },
-  //   'cinnamon':     { 'capacity': 2, 'durability': 3,  'flavor': -2, 'texture': -1, 'calories': 3 }
-  // }
-  
-  let inputI = ["sprinkles", "butterscotch", "chocolate", "candy"]
-  // inputI = ["cinnamon", "butterscotch"]
-  
-  let highestSum = 1
-  let highestSums = []
-  let sum = 0
-  
-  let sprinkles = 0
-  let butterscotch = 0
-  let chocolate = 0
-  let candy = 0
-  let cinnamon = 0
-  let calories = 0
-  
-  sum = 0
+let teaspoons = {}
+let cookie = {}
+let totalScore = 0
+let highestScore = 1
 
-  function displayAll() {
-    document.getElementById("all").innerHTML = ""
-    highestSums.sort().forEach(nr => {
-      document.getElementById("all").innerHTML += nr + "<br>"
-    })
-    
-  }
+function resetVariables() {
+  teaspoons = {}
+  cookie = {}
+  totalScore = 0
+}
 
-  function clickz() {
-    console.log(`sum ${sum}`)
-    console.log(`highestSum ${highestSum}`)
-    while(sum < highestSum) {
-    
-      let teaspoons = 100;
-      let quantities = [];
-      while (quantities.length < inputI.length-1) {
-        let q = Math.round(Math.random()*teaspoons);
-        quantities.push(q);
-        teaspoons -= q;
+function randomizeTeaspoons() {
+  let teaspoonsLeft = 100
+  let loop = 0
+  let total = 0
+  for(key in input) {
+      if(loop === Object.keys(input).length-1) {
+          teaspoons[key] = teaspoonsLeft
+      } else {
+          teaspoons[key] = Math.round((Math.random() * teaspoonsLeft)*1)
+          teaspoonsLeft = teaspoonsLeft - teaspoons[key]
       }
+      total += teaspoons[key]
+      loop++
+  }
+}
 
-      sprinkles = quantities[0]
-      butterscotch = quantities[1]
-      chocolate = quantities[2]
-      candy = teaspoons
-
-      // cinnamon = quantities[0]
-      // butterscotch = teaspoons
-
-      // butterscotch = 40
-      // cinnamon = 60
-
-      let capacity = 0
-      let durability = 0
-      let flavor = 0
-      let texture = 0
-      calories = 0
-
-      for(let key in input) {
-        capacity    += eval(key)*input[key].capacity
-        durability  += eval(key)*input[key].durability
-        flavor      += eval(key)*input[key].flavor
-        texture     += eval(key)*input[key].texture
-        calories    += eval(key)*input[key].calories
+function calculateIngredient() {
+  for(ingredient in input) {
+      for(property in input[ingredient]) {
+          cookie[property] = cookie[property] || 0
+          cookie[property] += teaspoons[ingredient] * input[ingredient][property]
       }
+  }
+}
 
-      if(capacity<0) { capacity = 0 }
-      if(durability<0) { durability = 0 }
-      if(flavor<0) { flavor = 0 }
-      if(texture<0) { texture = 0 }
+function propertiesAboveZero() {
+  for(property in cookie) {
+      cookie[property] = (cookie[property] < 0) ? 0 : cookie[property]
+  }
+}
 
-      sum = capacity * durability * flavor * texture
-    }
+function calcTotalScore() {
+  let total = 1
+  for(property in cookie) {
+      if(property !== "calories") {
+          total *= cookie[property]
+      }
+  }
+  return total
+}
 
-    if(sum > 0) {
-      highestSum = sum
-      sum = 0
-    }
+function calc() {
+  while(cookie.calories !== 500 || totalScore < highestScore) {
+      resetVariables()
 
-    if(calories === 500) {
-      highestSums.push(highestSum)
-      document.getElementById("part1").innerHTML += `highestSum - ${calories}`
-    }
-    
+      randomizeTeaspoons()
+
+      calculateIngredient()
+      propertiesAboveZero()
+
+      totalScore = calcTotalScore()
+  }
+  highestScore = totalScore
+  totalScore = 0
+  document.getElementById("part1").innerHTML += `<br> totalScore: ${highestScore}; Calories: ${cookie.calories}`
 }

@@ -27,8 +27,6 @@ Given the ingredients in your kitchen and their properties, what is the total sc
 
 Your puzzle answer was 21367368.
 
-The first half of this puzzle is complete! It provides one gold star: *
-
 --- Part Two ---
 
 Your cookie recipe becomes wildly popular! Someone asks if you can make another recipe that has exactly 500 calories per cookie (so they can use it as a meal replacement). Keep the rest of your award-winning process the same (100 teaspoons, same ingredients, same scoring system).
@@ -37,11 +35,4 @@ For example, given the ingredients above, if you had instead selected 40 teaspoo
 
 Given the ingredients in your kitchen and their properties, what is the total score of the highest-scoring cookie you can make with a calorie total of 500?
 
-Although it hasn't changed, you can still get your puzzle input.
-
-tried
-21367368
-
-20874392
-21158400
-21243000
+Your puzzle answer was 1766400.
