@@ -101,16 +101,8 @@ let grid = {
   99: [".", "#", ".", "#", ".", "#", "#", ".", "#", "#", ".", "#", "#", "#", ".", ".", "#", ".", ".", ".", "#", ".", "#", ".", ".", ".", ".", "#", ".", ".", "#", ".", "#", "#", ".", ".", "#", ".", "#", ".", "#", ".", "#", ".", "#", "#", ".", "#", "#", ".", "#", "#", "#", "#", "#", ".", ".", ".", "#", ".", ".", ".", ".", ".", ".", ".", ".", "#", "#", "#", "#", ".", ".", "#", "#", "#", ".", ".", "#", "#", "#", "#", ".", "#", "#", "#", "#", "#", ".", ".", "#", ".", "#", "#", ".", "#", ".", "#", "#", "."]
 }
 
-grid = {
-  0: [ ".", "#", ".", "#", ".", "#" ],
-  1: [ ".", ".", ".", "#", "#", "." ],
-  2: [ "#", ".", ".", ".", ".", "#" ],
-  3: [ ".", ".", "#", ".", ".", "." ],
-  4: [ "#", ".", "#", ".", ".", "#" ],
-  5: [ "#", "#", "#", "#", ".", "." ]
-}
-
 let nextGrid = {}
+let gridLength = Object.keys(grid).length
 
 const state = {
   "#": 1,
@@ -118,7 +110,7 @@ const state = {
 }
 
 function checkInGrid(pos) {
-  return pos >= 0 && pos <= Object.keys(grid).length-1  
+  return pos >= 0 && pos <= gridLength-1
 }
 
 function turnedOn(ledRow, ledPos) {
@@ -156,17 +148,24 @@ function getNextState(currentState, neighbours) {
     return "."
 }
 
+function turnCornersOn() {
+  grid[0][0] = "#"
+  grid[0][gridLength-1] = "#"
+  grid[gridLength-1][0] = "#"
+  grid[gridLength-1][gridLength-1] = "#"
+}
+
 function animateIt() {
   for(row in grid) {
     nextGrid[row] = []
     for(led in grid[row]) {
-      neighboursStates = getNeighboursStates(row*1, led*1)
-      nextState = getNextState(grid[row][led], neighboursStates)
-      console.log("nextState", nextState)
+      let neighboursStates = getNeighboursStates(row*1, led*1)
+      let nextState = getNextState(grid[row][led], neighboursStates)
       nextGrid[row][led] = nextState
     }
   }
   Object.assign(grid, nextGrid);
+  turnCornersOn()
 }
 
 function visualize() {
@@ -175,19 +174,25 @@ function visualize() {
   for(row in grid) {
     let DOMrow = ""
     for(led in grid[row]) {
-      DOMrow += " " + grid[row][led]
+      DOMrow += grid[row][led]
       areOn += state[grid[row][led]]
     }
-    console.log("row", DOMrow)
     rowEl = document.createElement("p")
     rowEl.innerHTML = DOMrow
     document.getElementById("part1").appendChild(rowEl)
   }
-  alert(`${areOn} lefs are on`)
+  document.getElementById("part2").innerHTML = `${areOn} lefs are on`
 }
 
-let i = 0
-while(i<4) {
-  animateIt()
-  i++
+function init() {
+  turnCornersOn()
+  visualize()
+  
+  let i = 0
+  while(i<100) {
+    animateIt()
+    i++
+  }
 }
+
+init()
