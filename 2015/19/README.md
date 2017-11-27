@@ -26,14 +26,4 @@ The machine replaces without regard for the surrounding characters. For example,
 
 Your puzzle input describes all of the possible replacements and, at the bottom, the medicine molecule for which you need to calibrate the machine. How many distinct molecules can be created after all the different ways you can do one replacement on the medicine molecule?
 
-
-
-
-
-
-
-
-
-
-
-That's not the right answer; your answer is too high. If you're stuck, there are some general tips on the about page, or you can ask for hints on the subreddit. Please wait one minute before trying again. (You guessed 635.) [Return to Day 19]
+Your puzzle answer was 518.

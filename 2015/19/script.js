@@ -43,40 +43,45 @@ let replacements = [
   { from: "e", to: "NAl" },
   { from: "e", to: "OMg" }
 ]
-let molecule = "CRnSiRnCaPTiMgYCaPTiRnFArSiThFArCaSiThSiThPBCaCaSiRnSiRnTiTiMgArPBCaPMgYPTiRnFArFArCaSiRnBPMgArPRnCaPTiRnFArCaSiThCaCaFArPBCaCaPTiTiRnFArCaSiRnSiAlYSiThRnFArArCaSiRnBFArCaCaSiRnSiThCaCaCaFYCaPTiBCaSiThCaSiThPMgArSiRnCaPBFYCaCaFArCaCaCaCaSiThCaSiRnPRnFArPBSiThPRnFArSiRnMgArCaFYFArCaSiRnSiAlArTiTiTiTiTiTiTiRnPMgArPTiTiTiBSiRnSiAlArTiTiRnPMgArCaFYBPBPTiRnSiRnMgArSiThCaFArCaSiThFArPRnFArCaSiRnTiBSiThSiRnSiAlYCaFArPRnFArSiThCaFArCaCaSiThCaCaCaSiRnPRnCaFArFYPMgArCaPBCaPBSiRnFYPBCaFArCaSiAl"
-
-let distinctMolecules = []
+// let molecule = "CRnSiRnCaPTiMgYCaPTiRnFArSiThFArCaSiThSiThPBCaCaSiRnSiRnTiTiMgArPBCaPMgYPTiRnFArFArCaSiRnBPMgArPRnCaPTiRnFArCaSiThCaCaFArPBCaCaPTiTiRnFArCaSiRnSiAlYSiThRnFArArCaSiRnBFArCaCaSiRnSiThCaCaCaFYCaPTiBCaSiThCaSiThPMgArSiRnCaPBFYCaCaFArCaCaCaCaSiThCaSiRnPRnFArPBSiThPRnFArSiRnMgArCaFYFArCaSiRnSiAlArTiTiTiTiTiTiTiRnPMgArPTiTiTiBSiRnSiAlArTiTiRnPMgArCaFYBPBPTiRnSiRnMgArSiThCaFArCaSiThFArPRnFArCaSiRnTiBSiThSiRnSiAlYCaFArPRnFArSiThCaFArCaCaSiThCaCaCaSiRnPRnCaFArFYPMgArCaPBCaPBSiRnFYPBCaFArCaSiAl"
+// baseMolecule = "e"
+let distinctMolecules = ["e"]
 
 // replacements = [
 //   { from: "H", to: "HO" },
 //   { from: "H", to: "OH" },
 //   { from: "O", to: "HH" }
 // ]
-// molecule = "HOHOHO"
+// molecule = "HOH" 
 
-function replace(replacement, index) {
+function replace(replacement, index, molecule) {
   let newIndex = molecule.indexOf(replacement.from, index)
   if(newIndex >= 0) {
-    distinctMolecule = molecule.substr(0, newIndex) + replacement.to + molecule.substr(newIndex + 1);
-    distinctMolecules.push(distinctMolecule)
-    return newIndex+1
+    distinctMolecule = molecule.substr(0, newIndex) + replacement.to + molecule.substr(newIndex + replacement.from.length);
+    if(isUnique(distinctMolecule)) {
+      distinctMolecules.push(distinctMolecule)
+    }
+    return newIndex + replacement.from.length
   }
   return molecule.length
 }
 
-function lookForReplacement(replacement) {
+function isUnique(distinctMolecule) {
+  return distinctMolecules.indexOf(distinctMolecule) < 0
+}
+
+function lookForReplacement(replacement, molecule) {
   let index = 0
   while(index < molecule.length) {
-    index = replace(replacement, index)
+    index = replace(replacement, index, molecule)
   }
 }
 
-function init() {
-  for(key in replacements) {
-    console.log(replacements[key])
-    lookForReplacement(replacements[key])
+function replaceMolecules() {
+  for(molecule of distinctMolecules) {
+    for(key in replacements) {
+      lookForReplacement(replacements[key], molecule)
+    }
   }
   console.log("distinct molecules", distinctMolecules)
 }
-
-init()
