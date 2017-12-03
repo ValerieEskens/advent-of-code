@@ -1,18 +1,24 @@
 let input = 289326
-// input = 1024
 let arr = []
 arr[269] = []
 arr[269][269] = 1
-// arr[16] = []
-// arr[16][16] = 1
 
-// arr = [
-// 	[ 17, 16, 15, 14, 13 ],
-// 	[ 18, 5, 4, 3, 12 ],
-// 	[ 19, 6, 1, 2, 11 ],
-// 	[ 20, 7, 8, 9, 10 ],
-// 	[ 21, 22, 23, 24, 25 ]	
-// ]
+const afterDir = 	{ right: "down", down: "left", left: "up", up: "right" }
+const beforeDir = { right: "up", down: "right", left: "down", up: "left" }
+
+function getPos(nr) {
+	let posx
+	let posy
+	arr.forEach((a, key) => {
+		nrIndex = a.indexOf(nr)
+		if(nrIndex !== -1) {
+			posx = key
+			posy = nrIndex
+			return false
+		}
+	})
+	return [posx, posy]
+}
 
 function nextPos(dir) {
 	let pos
@@ -29,18 +35,21 @@ function nextPos(dir) {
 	return pos
 }
 
-const afterDir = {
-	right: "down",
-	down: "left",
-	left: "up",
-	up: "right"
-}
+function calcValue(pos) {
+	let val = 0
+	if(arr[pos[0]-1] !== undefined) {
+		val +=	(arr[pos[0]-1][pos[1]-1] || 0) +
+						(arr[pos[0]-1][pos[1]] || 0) +
+						(arr[pos[0]-1][pos[1]+1] || 0)
+	}
 
-const beforeDir = {
-	right: "up",
-	down: "right",
-	left: "down",
-	up: "left"
+	if(arr[pos[0]+1] !== undefined) {
+		val +=	(arr[pos[0]+1][pos[1]-1] || 0) +
+						(arr[pos[0]+1][pos[1]] || 0) +
+						(arr[pos[0]+1][pos[1]+1] || 0)
+	}
+		
+	return val + (arr[pos[0]][pos[1]-1] || 0) + (arr[pos[0]][pos[1]+1] || 0)
 }
 
 let i = 2
@@ -48,7 +57,6 @@ let dir = "right"
 let prevdir = ""
 let prevNr = 1
 let prevPos = [269, 269]
-// prevPos = [16, 16]
 while(i<= input) {
 	let pos = nextPos(dir)
 
@@ -65,49 +73,17 @@ while(i<= input) {
 		arr[pos[0]] = []
 	}
 	
+	i = calcValue(pos)
+	console.log("i", i)
 	arr[pos[0]][pos[1]] = i
 	dir = afterDir[dir]
-	i++
 	prevPos = pos
 	prevDir = dir
-	// console.log(arr)
 }
 
-function visualize() {
-	arr.forEach((val, key) => {
-		let rowEl = document.createElement("tr")
-		val.forEach((nr, key) => {
-			let nrEl = document.createElement("td")
-			nrEl.innerHTML = nr
-			rowEl.appendChild(nrEl)
-		})
-		document.getElementById("visualize").appendChild(rowEl)
-	})
-}
-
-function getPos(nr) {
-	let posx
-	let posy
-	arr.forEach((a, key) => {
-		nrIndex = a.indexOf(nr)
-		if(nrIndex !== -1) {
-			posx = key
-			posy = nrIndex
-			return false
-		}
-	})
-	return [posx, posy]
-}
-
-let nr = 1 // 0
-nr = 12 // 3
-nr = 23 // 2
-nr = 1024 // 31
-nr = 289326
-
-let posNr = getPos(nr)
+let posNr = getPos(input)
 let pos1 = getPos(1)
-console.log(`pos ${nr}: ${posNr}`)
+console.log(`pos ${input}: ${posNr}`)
 console.log(`pos 1: ${pos1}`)
 
 let hor
