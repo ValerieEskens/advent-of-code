@@ -519,6 +519,7 @@ input.forEach(function(passphrase, key) {
 	let valid = true
 	let passphraseArr = passphrase.split(" ").slice().sort()
 	let sortedPassphraseArr = []
+	console.log('test')
 
 	passphraseArr.forEach(function(word, key) {
 		let sortedWord = word.split('').sort().join("")
