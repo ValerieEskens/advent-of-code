@@ -21,12 +21,9 @@ let lastIndex = scenarios.length-1
 let matchedIndex = scenarios.indexOf(scenarios[lastIndex])
 while(matchedIndex === lastIndex) {
     spreadIt()
-    console.log(input)
     lastIndex = scenarios.length-1
     matchedIndex = scenarios.indexOf(scenarios[lastIndex])
 }
 
-console.log("steps: ", scenarios.length)
-console.log("matchedIndex: ", matchedIndex)
-console.log("lastIndex: ", lastIndex)
-console.log("difference", lastIndex-matchedIndex)
+console.log("1 - steps: ", scenarios.length)
+console.log("2 - difference", lastIndex-matchedIndex)
