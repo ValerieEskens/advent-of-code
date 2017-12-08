@@ -14,7 +14,23 @@ let input = [
   { name: "cntj", weight: 57 },
 ]
 
-input = [
+input = {
+  pbga: { weight: 66 },
+  xhth: { weight: 57 },
+  ebii: { weight: 61 },
+  havc: { weight: 66 },
+  ktlj: { weight: 57 },
+  fwft: { weight: 72, programs: { ktlj: {}, cntj: {}, xhth: {} } },
+  qoyq: { weight: 66 },
+  padx: { weight: 45, programs: { pbga: {}, havc: {}, qoyq: {} } },
+  tknk: { weight: 41, programs: { ugml: {}, padx: {}, fwft: {} } },
+  jptl: { weight: 61 },
+  ugml: { weight: 68, programs: { gyxo: {}, ebii: {}, jptl: {} } },
+  gyxo: { weight: 61 },
+  cntj: { weight: 57 },
+}
+
+input2 = [
   { name: "mypyemv", weight: 1058, programs: ["tdssotr", "pebnvks", "zaulju"] },
   { name: "snslv", weight: 48 },
   { name: "aytbgf", weight: 30 },
@@ -1195,19 +1211,21 @@ input = [
   { name: "tnmtz", weight: 26 },
 ]
 
-function matchPrograms() {
-  input.forEach((program, key) => {
-    if(program !== undefined && program.programs !== undefined) {
-      program.programs.forEach((progInProg, progKey) => {
-        let programInInput = input.find((entry, key) => {
-          let match = (entry.name == progInProg)
-          if(match) {
-            input[key].parent = program.name
-          }
+function matchPrograms(loopOver) {
+  if(loopOver !== undefined) {
+    Object.keys(loopOver).forEach((program, key) => {
+      if(input[program]) {
+        loopOver[program].programs[program] = input[program]
+        delete loopOver[program].programs[progKey]
+        delete input[program]
+      }
+      if(loopOver[program] !== undefined && loopOver[program].programs !== undefined) {
+        Object.keys(loopOver[program].programs).forEach((progInProg, progKey) => {
+          matchPrograms(loopOver[program].programs[progInProg].programs)
         })
-      })
-    }
-  })
+      }
+    })
+  }
 }
 
 function hasNoParent() {
@@ -1215,6 +1233,13 @@ function hasNoParent() {
     return program.parent === undefined
   })
   return masterParent
+}
+
+
+function makeTree(masterParent) {
+  masterParent.programs.forEach((program, key) => {
+    masterParent.programs[key] = ""
+  })
 }
 
 function countWeights(program) {
@@ -1243,17 +1268,25 @@ function countWeights(program) {
   return programWeights
 }
 
-function compareWeights(program) {
-  if(program.programs !== undefined) {
-    program.programs.forEach((progInProg, key) => {
-
-    })
+function cleanUp(toClean) {
+  for (let i = 0; i < Object.keys(toClean).length; i++) {
+    if (toClean[i] === undefined) {         
+      delete toClean[i]
+      i--;
+    }
   }
+  return toClean;
 }
 
-matchPrograms()
-let masterParent = hasNoParent()
-console.log("1: masterParent:", masterParent)
 
-countWeights(masterParent)
-compareWeights(masterParent)
+// matchPrograms()
+// let masterParent = hasNoParent()
+// let tree = masterParent
+// console.log("1: masterParent:", masterParent)
+
+let keepLooping = true
+let loopData = input
+while(Object.keys(input).length > 1) {
+  matchPrograms(input)
+  console.log(input)
+}
