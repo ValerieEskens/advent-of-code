@@ -14,7 +14,7 @@ let input = [
   { name: "cntj", weight: 57 },
 ]
 
-input2 = [
+input = [
   { name: "mypyemv", weight: 1058, programs: ["tdssotr", "pebnvks", "zaulju"] },
   { name: "snslv", weight: 48 },
   { name: "aytbgf", weight: 30 },
@@ -1217,5 +1217,43 @@ function hasNoParent() {
   return masterParent
 }
 
+function countWeights(program) {
+  let totalWeight = 0
+  let programWeights = []
+  if(program.programs !== undefined) {
+    program.programs.forEach((progInProg, key) => {
+      let programInInput = input.find((entry, key) => {
+        return entry.name == progInProg
+      })
+      let totalWeightProgInProg = countWeights(programInInput)
+      programWeights.push({name: progInProg, totWeight: totalWeightProgInProg})
+      totalWeight += totalWeightProgInProg
+    })
+    let allTheSame = true
+    programWeights.forEach((pr) => {
+      if(pr.totWeight !== programWeights[0].totWeight) {
+        allTheSame = false
+      }
+    })
+    if(!allTheSame) {
+      console.log('not all the same!:', programWeights)
+    }
+  }
+  program.totalWeight = totalWeight + program.weight
+  return programWeights
+}
+
+function compareWeights(program) {
+  if(program.programs !== undefined) {
+    program.programs.forEach((progInProg, key) => {
+
+    })
+  }
+}
+
 matchPrograms()
-console.log("1: masterParent:", hasNoParent())
+let masterParent = hasNoParent()
+console.log("1: masterParent:", masterParent)
+
+countWeights(masterParent)
+compareWeights(masterParent)
