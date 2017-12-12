@@ -2021,23 +2021,37 @@ input = [
   [4, 5], // 6 - true
 ]
 
-let communicationsGroups = [[]]
-function fitInGroups() {
-  input.forEach((program, key) => {
-    let iLength = 0
-    while(iLength < input[key].length) {
-      iLength = input[key].length
-      program.forEach(element => {
-        if(element !== key) {
-          input[key] = input[key].concat(input[element])
-          input[element] = []
+function handleThisShit() {
+  let j = 0
+  input.forEach((array, key) => {
+    array.forEach(number => {
+      while(j < input.length) {
+        if(j !== key && input[j].indexOf(number) > -1) {
+          input[key] = input[key].concat(input[j])
+          input[j] = []
         }
-      })
-    }
+        j++
+      }
+    })
+    input[key] = removeDups(input[key])
   })
 }
 
-fitInGroups()
+handleThisShit()
+handleThisShit()
+console.log("input", input)
+console.log("input", input)
+
+function removeDups(array) {
+  array.sort()
+  for(let i = 0; i < array.length; i++) {
+    if(array[i] === array[i+1]) {
+      array.splice(i, 1)
+      i--
+    }
+  }
+  return array
+}
 
 function mergeArraysWithoutDuplicates(arr1, arr2) {
   arr2.forEach(element => {
