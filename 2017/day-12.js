@@ -2020,29 +2020,39 @@ input = [
   [6], // 5 - true
   [4, 5], // 6 - true
 ]
-let mergedWith = []
 
-function mergeArraysWithoutDuplicates(i1, i2) {
-  mergedWith[i1].push(i2)
-  input[i2].forEach(element => {
-    if(input[i1].indexOf(element) === -1) {
-      input[i1].push(element)
+let communicationsGroups = [[]]
+function fitInGroups() {
+  input.forEach((program, key) => {
+    let iLength = 0
+    while(iLength < input[key].length) {
+      iLength = input[key].length
+      program.forEach(element => {
+        if(element !== key) {
+          input[key] = input[key].concat(input[element])
+          input[element] = []
+        }
+      })
     }
   })
-  if(i1 !== i2) {
-    input[i2] = []
-  }
-  input[i1].sort()
+}
+
+fitInGroups()
+
+function mergeArraysWithoutDuplicates(arr1, arr2) {
+  arr2.forEach(element => {
+    if(arr1.indexOf(element) === -1) {
+      arr1.push(element)
+    }
+  })
+  return arr1.sort()
 }
 
 function mergePrograms() {
   input.forEach((program, key) => {
     program.forEach(group => {
-      if(mergedWith[key] === undefined) {
-        mergedWith[key] = []
-      }
-      if(key !== group && mergedWith[key].indexOf(group) === -1) {
-        mergeArraysWithoutDuplicates(key, group)
+      if(key !== group) {
+        input[key] = mergeArraysWithoutDuplicates(input[key], input[group])
       }
     })
   })
@@ -2075,26 +2085,26 @@ let containsZero = 1
 let prevContainsZero = 0
 let i = 0
 // while(prevContainsZero < containsZero) {
-while(i < 15) {
-  mergePrograms()
-  // removeDuplicates()
-  // prevContainsZero = containsZero
-  // containsZero = countZeros()
-  i++
-}
+// while(i < 9) {
+//   mergePrograms()
+//   // removeDuplicates()
+//   // prevContainsZero = containsZero
+//   // containsZero = countZeros()
+//   i++
+// }
 
-console.log('input', input)
+// console.log('input', input)
 
-let groups = []
-input.forEach(program => {
-  let programString = program.join("-")
-  if(groups.indexOf(programString) === -1) {
-    groups.push(programString)
-  }
-})
+// let groups = []
+// input.forEach(program => {
+//   let programString = program.join("-")
+//   if(groups.indexOf(programString) === -1) {
+//     groups.push(programString)
+//   }
+// })
 
-console.log("groups", groups.sort())
-console.log("groups.length", groups.length)
+// console.log("groups", groups.sort())
+// console.log("groups.length", groups.length)
 
 // 187 too high
 // 182 too high
