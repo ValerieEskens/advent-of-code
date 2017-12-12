@@ -2001,65 +2001,13 @@ let input = [
   [708],
 ]
 
-// let input = [
-//   [2], // 0 - true
-//   [1], // 1 - false
-//   [0, 3, 4], // 2 - true
-//   [2, 4], // 3 - true
-//   [2, 3, 6], // 4 - true
-//   [6], // 5 - false
-//   [5], // 6 - false
-// ]
-
-input = [
-  [2], // 0 - true
-  [1], // 1 - false
-  [0, 3, 4], // 2 - true
-  [2, 4], // 3 - true
-  [2, 3, 6], // 4 - true
-  [6], // 5 - true
-  [4, 5], // 6 - true
-]
-
-function handleThisShit() {
-  let j = 0
-  input.forEach((array, key) => {
-    array.forEach(number => {
-      while(j < input.length) {
-        if(j !== key && input[j].indexOf(number) > -1) {
-          input[key] = input[key].concat(input[j])
-          input[j] = []
-        }
-        j++
-      }
-    })
-    input[key] = removeDups(input[key])
-  })
-}
-
-handleThisShit()
-handleThisShit()
-console.log("input", input)
-console.log("input", input)
-
-function removeDups(array) {
-  array.sort()
-  for(let i = 0; i < array.length; i++) {
-    if(array[i] === array[i+1]) {
-      array.splice(i, 1)
-      i--
-    }
-  }
-  return array
-}
-
 function mergeArraysWithoutDuplicates(arr1, arr2) {
   arr2.forEach(element => {
     if(arr1.indexOf(element) === -1) {
       arr1.push(element)
     }
   })
-  return arr1.sort()
+  return arr1
 }
 
 function mergePrograms() {
@@ -2079,46 +2027,46 @@ function countZeros() {
       containsZero++
     }
   })
-  console.log("containsZero", containsZero)
   return containsZero
 }
 
-function removeDuplicates() {
-  let newInput = []
-  input.forEach((program, key) => {
-    let programString = program.join("-")
-    if(newInput.indexOf(programString) === -1) {
-      newInput.push(programString)
-    } else {
-      input[key] = []
+function fitInGroups() {
+  input.forEach((array, key) => {
+    for(let i = 0; i < array.length; i++) {
+      if(array[i] !== key) {
+        input[key] = mergeArraysWithoutDuplicates(input[key], input[array[i]])
+        input[array[i]] = []
+      }
     }
+    input[key].sort()
   })
 }
 
-let containsZero = 1
-let prevContainsZero = 0
-let i = 0
-// while(prevContainsZero < containsZero) {
-// while(i < 9) {
-//   mergePrograms()
-//   // removeDuplicates()
-//   // prevContainsZero = containsZero
-//   // containsZero = countZeros()
-//   i++
-// }
+function countGroups() {
+  let groups = []
+  input.forEach(array => {
+    if(array.length !== 0) {
+      groups.push(array)
+    }
+  })
+  return groups.length
+}
 
-// console.log('input', input)
+function part1() {
+  let containsZero = 1
+  let prevContainsZero = 0
+  while(prevContainsZero < containsZero) {
+    mergePrograms()
+    prevContainsZero = containsZero
+    containsZero = countZeros()
+  }
+  console.log(`1 - number that contain zero: ${containsZero}`)
+}
 
-// let groups = []
-// input.forEach(program => {
-//   let programString = program.join("-")
-//   if(groups.indexOf(programString) === -1) {
-//     groups.push(programString)
-//   }
-// })
+function part2() {
+  fitInGroups()
+  console.log(`2 - number of groups: ${countGroups()}`)
+}
 
-// console.log("groups", groups.sort())
-// console.log("groups.length", groups.length)
-
-// 187 too high
-// 182 too high
+part1()
+part2()
