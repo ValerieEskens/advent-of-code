@@ -19,6 +19,7 @@ let caught = []
 
 
 function createFirewall() {
+  firewall = []
   Object.keys(input).forEach(layer => {
     let range = []
     let i = 0
@@ -68,19 +69,45 @@ function calculateSeverity() {
   caught.forEach(c => {
     severity += c.depth*c.range
   })
-  
+  console.log("caught", caught)
   console.log("1 - severity", severity)
+  return severity
 }
 
-createFirewall()
-initScanner()
+function goThrough(beginAt) {
+  createFirewall()
+  initScanner()
+  caught = []
+  currentPos = 0
+  let j = 0
+  while(j < beginAt) {
+    moveScanners()
+    j++
+  }
 
-let i = 0
-while(i <= 88) {
-  move()
-  moveScanners()
-  i++
+  let i = 0
+  while(i <= 88) {
+    move()
+    moveScanners()
+    i++
+  }
 }
 
-console.log("caught", caught)
+let delay = 0
+let severity = 1
+goThrough(delay)
+
+while(caught.length > 0) {
+  delay++
+  goThrough(delay)
+  severity = calculateSeverity()
+  console.log("severity", severity)
+}
+
+console.log("delay", delay)
+
+
+
+
+
 calculateSeverity()
